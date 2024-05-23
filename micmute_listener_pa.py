@@ -4,10 +4,13 @@ import pulsectl
 import os
 import sys
 import signal
+import subprocess
 pulse = pulsectl.Pulse('micmute-listener')
 
 # TODO: Read this from an external config file
-mic_name = 'alsa_input.pci-0000_04_00.6.analog-stereo'
+
+get_mic_command = "pactl info | grep 'Default Source' | awk '{print $3}'"
+mic_name = subprocess.check_output(get_mic_command, shell=True, text=True).strip()
 
 active_index = 1 # This is the index of the source
 pulse_event = None
