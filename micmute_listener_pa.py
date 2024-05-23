@@ -7,7 +7,7 @@ import signal
 pulse = pulsectl.Pulse('micmute-listener')
 
 # TODO: Read this from an external config file
-mic_name = 'alsa_input.pci-0000_04_00.6.analog-stereo'
+mic_name = 'alsa_input.pci-0000_00_1f.3.analog-stereo'
 
 active_index = 1 # This is the index of the source
 pulse_event = None
@@ -47,7 +47,7 @@ def init():
     print('Source list:', pulse.source_list())
     
     find_mic_index()
-    init_led_value = 0 if pulse.source_info(active_index).mute == 1 else 1
+    init_led_value = 0 if pulse.source_info(active_index).mute == 0 else 1
     set_led_value(init_led_value)
 
     pulse.event_mask_set('all')
@@ -69,5 +69,5 @@ if __name__ == '__main__':
             continue
 
         if pulse_event.index == active_index:
-                led_value = 0 if pulse.source_info(active_index).mute == 1 else 1
+                led_value = 0 if pulse.source_info(active_index).mute == 0 else 1
                 set_led_value(led_value)
